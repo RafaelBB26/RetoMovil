@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, session
+import random
 
 app = Flask(__name__)
 app.secret_key = "retomovil"
@@ -52,6 +53,7 @@ preguntas_timeline = [
 ]
 
 @app.route("/")
+@app.route("/")
 def inicio():
 
     session.clear()
@@ -69,6 +71,11 @@ def inicio():
 
     session["pregunta_actual_timeline"] = 0
     session["correctas_timeline"] = 0
+
+    random.shuffle(preguntas_reglas)
+    random.shuffle(preguntas_notas)
+    random.shuffle(preguntas_skills)
+    random.shuffle(preguntas_timeline)
 
     return render_template("index.html")
 
