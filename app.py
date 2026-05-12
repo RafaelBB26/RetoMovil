@@ -39,10 +39,20 @@ preguntas_skills = [
     {"pregunta": "¿Qué lenguaje se abrevia como JS?", "respuesta": "javascript"}
 ]
 
+preguntas_timeline = [
+    {"pregunta": "¿Cuándo es el primer parcial?", "respuesta": "02/06/26"},
+    {"pregunta": "¿Cuándo es el segundo parcial?", "respuesta": "07/07/26"},
+    {"pregunta": "¿Cuándo es el tercer parcial?", "respuesta": "11/08/26"},
+    {"pregunta": "¿Cuándo es el examen final?", "respuesta": "17/08/26"},
+    {"pregunta": "¿Qué fecha corresponde al parcial 2?", "respuesta": "07/07/26"}
+]
+
 @app.route("/")
 def inicio():
 
     session.clear()
+
+    session["vidas"] = 3
 
     session["pregunta_actual"] = 0
     session["correctas"] = 0
@@ -53,7 +63,25 @@ def inicio():
     session["pregunta_actual_skills"] = 0
     session["correctas_skills"] = 0
 
+    session["pregunta_actual_timeline"] = 0
+    session["correctas_timeline"] = 0
+
     return render_template("index.html")
+
+def revisar_respuesta(respuesta_usuario, respuesta_correcta):
+
+    vidas = session.get("vidas", 3)
+
+    if respuesta_correcta in respuesta_usuario:
+        return True
+
+    vidas -= 1
+    session["vidas"] = vidas
+
+    if vidas <= 0:
+        return "gameover"
+
+    return False
 
 @app.route("/reglas", methods=["GET", "POST"])
 def reglas():
@@ -69,9 +97,16 @@ def reglas():
 
         respuesta_correcta = preguntas_reglas[pregunta_actual]["respuesta"]
 
-        if respuesta_correcta in respuesta_usuario:
+        resultado = revisar_respuesta(
+            respuesta_usuario,
+            respuesta_correcta
+        )
+
+        if resultado == True:
             correctas += 1
             mensaje = "✅ Correcto"
+        elif resultado == "gameover":
+            return redirect("/gameover")
         else:
             mensaje = "❌ Incorrecto"
 
@@ -93,7 +128,8 @@ def reglas():
         "reglas.html",
         pregunta=pregunta,
         mensaje=mensaje,
-        correctas=correctas
+        correctas=correctas,
+        vidas=session["vidas"]
     )
 
 @app.route("/notas", methods=["GET", "POST"])
@@ -110,9 +146,16 @@ def notas():
 
         respuesta_correcta = preguntas_notas[pregunta_actual]["respuesta"]
 
-        if respuesta_correcta in respuesta_usuario:
+        resultado = revisar_respuesta(
+            respuesta_usuario,
+            respuesta_correcta
+        )
+
+        if resultado == True:
             correctas += 1
             mensaje = "✅ Correcto"
+        elif resultado == "gameover":
+            return redirect("/gameover")
         else:
             mensaje = "❌ Incorrecto"
 
@@ -135,6 +178,7 @@ def notas():
         pregunta=pregunta,
         mensaje=mensaje,
         correctas=correctas,
+        vidas=session["vidas"],
         desbloqueo=session.get("mensaje_desbloqueo", "")
     )
 
@@ -152,9 +196,16 @@ def skills():
 
         respuesta_correcta = preguntas_skills[pregunta_actual]["respuesta"]
 
-        if respuesta_correcta in respuesta_usuario:
+        resultado = revisar_respuesta(
+            respuesta_usuario,
+            respuesta_correcta
+        )
+
+        if resultado == True:
             correctas += 1
             mensaje = "✅ Correcto"
+        elif resultado == "gameover":
+            return redirect("/gameover")
         else:
             mensaje = "❌ Incorrecto"
 
@@ -177,12 +228,66 @@ def skills():
         pregunta=pregunta,
         mensaje=mensaje,
         correctas=correctas,
+        vidas=session["vidas"],
         desbloqueo=session.get("mensaje_desbloqueo", "")
     )
 
-@app.route("/timeline")
+@app.route("/timeline", methods=["GET", "POST"])
 def timeline():
-    return render_template("timeline.html")
+
+    pregunta_actual = session.get("pregunta_actual_timeline", 0)
+    correctas = session.get("correctas_timeline", 0)
+
+    mensaje = ""
+
+    if request.method == "POST":
+
+        respuesta_usuario = request.form["respuesta"].lower()
+
+        respuesta_correcta = preguntas_timeline[pregunta_actual]["respuesta"].lower()
+
+        resultado = revisar_respuesta(
+            respuesta_usuario,
+            respuesta_correcta
+        )
+
+        if resultado == True:
+            correctas += 1
+            mensaje = "✅ Correcto"
+        elif resultado == "gameover":
+            return redirect("/gameover")
+        else:
+            mensaje = "❌ Incorrecto"
+
+        session["correctas_timeline"] = correctas
+        session["pregunta_actual_timeline"] = pregunta_actual + 1
+
+        if correctas >= 2:
+            return redirect("/final")
+
+        pregunta_actual = session["pregunta_actual_timeline"]
+
+    if pregunta_actual >= len(preguntas_timeline):
+        return redirect("/")
+
+    pregunta = preguntas_timeline[pregunta_actual]["pregunta"]
+
+    return render_template(
+        "timeline.html",
+        pregunta=pregunta,
+        mensaje=mensaje,
+        correctas=correctas,
+        vidas=session["vidas"],
+        desbloqueo=session.get("mensaje_desbloqueo", "")
+    )
+
+@app.route("/final")
+def final():
+    return render_template("final.html")
+
+@app.route("/gameover")
+def gameover():
+    return render_template("gameover.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

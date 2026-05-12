@@ -11,30 +11,17 @@
 
     <h1>🕒 Línea del Tiempo</h1>
 
-    <ul>
-        <li>02/06/26 → Primer Parcial</li>
-        <li>07/07/26 → Segundo Parcial</li>
-        <li>11/08/26 → Tercer Parcial</li>
-        <li>17/08/26 → Examen Final</li>
-    </ul>
+    <h2>{{ desbloqueo }}</h2>
 
-    <h2>📌 Eventos importantes</h2>
+    <h2>❤️ Vidas: {{ vidas }}</h2>
 
-    <ul>
-        <li>Entrega de actividades en Classroom</li>
-        <li>Subir evidencias a GitHub</li>
-        <li>Entrega de proyecto integrador</li>
-    </ul>
+    <h2>✅ Correctas: {{ correctas }}</h2>
 
-    <h2>❓ Preguntas del Tiempo</h2>
+    <p>{{ pregunta }}</p>
 
-    <form>
+    <form method="POST">
 
-        <p>¿Cuándo es el primer parcial?</p>
-        <input type="text">
-
-        <p>¿Cuándo es el examen final?</p>
-        <input type="text">
+        <input type="text" name="respuesta" required>
 
         <br><br>
 
@@ -44,11 +31,7 @@
 
     </form>
 
-    <br>
-
-    <a href="/">
-        <button>Volver</button>
-    </a>
+    <h3>{{ mensaje }}</h3>
 
 </body>
 </html>
