@@ -11,39 +11,23 @@
 
     <h1>📜 Cámara de las Reglas</h1>
 
-    <h2>📌 Lineamientos</h2>
+    <h2>Correctas: {{ correctas }}</h2>
 
-    <ul>
-        <li>80% de asistencia obligatoria</li>
-        <li>3 faltas = final del parcial</li>
-        <li>Plagio = 0 para todos</li>
-        <li>No entregar trabajos incompletos</li>
-        <li>No exámenes fuera de tiempo</li>
-        <li>Participación importante en clase</li>
-    </ul>
+    <p>{{ pregunta }}</p>
 
-    <h2>📚 Classroom</h2>
+    <form method="POST">
 
-    <ul>
-        <li>Entregas en PDF</li>
-        <li>Subir actividades completas</li>
-        <li>Revisión de tareas</li>
-        <li>Avisos importantes</li>
-    </ul>
+        <input type="text" name="respuesta" required>
 
-    <h2>🎥 Video Reporte</h2>
+        <br><br>
 
-    <ul>
-        <li>Explicar qué se hizo</li>
-        <li>Mostrar código</li>
-        <li>Explicar funcionamiento</li>
-        <li>Duración mínima de 5 minutos</li>
-        <li>Debe escucharse nuestra voz</li>
-    </ul>
+        <button type="submit">
+            Responder
+        </button>
 
-    <a href="/">
-        <button>Volver</button>
-    </a>
+    </form>
+
+    <h3>{{ mensaje }}</h3>
 
 </body>
 </html>
