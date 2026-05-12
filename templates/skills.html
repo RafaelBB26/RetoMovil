@@ -11,50 +11,15 @@
 
     <h1>⚔ Skills a desbloquear</h1>
 
-    <h2>🎯 Objetivo de la materia</h2>
+    <h2>{{ desbloqueo }}</h2>
 
-    <p>
-        Desarrollar aplicaciones móviles utilizando herramientas
-        modernas y programación multiplataforma.
-    </p>
+    <h2>Correctas: {{ correctas }}</h2>
 
-    <h2>💻 Tecnologías</h2>
+    <p>{{ pregunta }}</p>
 
-    <ul>
-        <li>JavaScript</li>
-        <li>React Native</li>
-        <li>Componentes</li>
-        <li>Screens</li>
-        <li>Navigations</li>
-        <li>Comunicación con APIs</li>
-    </ul>
+    <form method="POST">
 
-    <h2>📘 Actividades Teóricas</h2>
-
-    <ul>
-        <li>Investigaciones</li>
-        <li>Mapas conceptuales</li>
-        <li>Cuestionarios</li>
-        <li>Exposiciones</li>
-    </ul>
-
-    <h2>🛠 Actividades Prácticas</h2>
-
-    <ul>
-        <li>Reportes</li>
-        <li>Video reportes</li>
-        <li>Evidencias en GitHub</li>
-    </ul>
-
-    <h2>❓ Preguntas de Skills</h2>
-
-    <form>
-
-        <p>¿Qué framework móvil se utilizará?</p>
-        <input type="text">
-
-        <p>¿Qué lenguaje se usa antes de React Native?</p>
-        <input type="text">
+        <input type="text" name="respuesta" required>
 
         <br><br>
 
@@ -64,11 +29,7 @@
 
     </form>
 
-    <br>
-
-    <a href="/">
-        <button>Volver</button>
-    </a>
+    <h3>{{ mensaje }}</h3>
 
 </body>
 </html>

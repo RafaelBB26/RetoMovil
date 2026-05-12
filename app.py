@@ -4,95 +4,54 @@ app = Flask(__name__)
 app.secret_key = "retomovil"
 
 preguntas_reglas = [
-    {
-        "pregunta": "¿Cuántas faltas provocan el final del parcial?",
-        "respuesta": "3"
-    },
-    {
-        "pregunta": "¿Qué pasa si existe plagio?",
-        "respuesta": "0"
-    },
-    {
-        "pregunta": "¿Cómo deben entregarse las actividades?",
-        "respuesta": "pdf"
-    },
-    {
-        "pregunta": "¿Cuál es la duración mínima del video reporte?",
-        "respuesta": "5"
-    },
-    {
-        "pregunta": "¿Qué debe escucharse en el video reporte?",
-        "respuesta": "voz"
-    },
-    {
-        "pregunta": "¿Dónde se entregan las actividades?",
-        "respuesta": "classroom"
-    },
-    {
-        "pregunta": "¿Qué sucede si entregas trabajos incompletos?",
-        "respuesta": "no se aceptan"
-    }
+    {"pregunta": "¿Cuántas faltas provocan el final del parcial?", "respuesta": "3"},
+    {"pregunta": "¿Qué pasa si existe plagio?", "respuesta": "0"},
+    {"pregunta": "¿Cómo deben entregarse las actividades?", "respuesta": "pdf"},
+    {"pregunta": "¿Cuál es la duración mínima del video reporte?", "respuesta": "5"},
+    {"pregunta": "¿Qué debe escucharse en el video reporte?", "respuesta": "voz"},
+    {"pregunta": "¿Dónde se entregan las actividades?", "respuesta": "classroom"},
+    {"pregunta": "¿Qué sucede si entregas trabajos incompletos?", "respuesta": "no se aceptan"}
 ]
 
 preguntas_notas = [
-    {
-        "pregunta": "¿Cuánto vale conocimiento en el parcial 1?",
-        "respuesta": "40"
-    },
-    {
-        "pregunta": "¿Cuánto vale desempeño en el parcial 1?",
-        "respuesta": "20"
-    },
-    {
-        "pregunta": "¿Cuánto vale producto en el parcial 1?",
-        "respuesta": "30"
-    },
-    {
-        "pregunta": "¿Cuánto vale integrador en el parcial 1?",
-        "respuesta": "10"
-    },
-    {
-        "pregunta": "¿Cuánto vale conocimiento en el parcial 2?",
-        "respuesta": "40"
-    },
-    {
-        "pregunta": "¿Cuánto vale desempeño en el parcial 2?",
-        "respuesta": "20"
-    },
-    {
-        "pregunta": "¿Cuánto vale producto en el parcial 2?",
-        "respuesta": "30"
-    },
-    {
-        "pregunta": "¿Cuánto vale integrador en el parcial 2?",
-        "respuesta": "10"
-    },
-    {
-        "pregunta": "¿Cuánto vale conocimiento en el parcial 3?",
-        "respuesta": "10"
-    },
-    {
-        "pregunta": "¿Cuánto vale desempeño en el parcial 3?",
-        "respuesta": "10"
-    },
-    {
-        "pregunta": "¿Cuánto vale producto en el parcial 3?",
-        "respuesta": "30"
-    },
-    {
-        "pregunta": "¿Cuánto vale integrador en el parcial 3?",
-        "respuesta": "50"
-    }
+    {"pregunta": "¿Cuánto vale conocimiento en el parcial 1?", "respuesta": "40"},
+    {"pregunta": "¿Cuánto vale desempeño en el parcial 1?", "respuesta": "20"},
+    {"pregunta": "¿Cuánto vale producto en el parcial 1?", "respuesta": "30"},
+    {"pregunta": "¿Cuánto vale integrador en el parcial 1?", "respuesta": "10"},
+    {"pregunta": "¿Cuánto vale conocimiento en el parcial 2?", "respuesta": "40"},
+    {"pregunta": "¿Cuánto vale desempeño en el parcial 2?", "respuesta": "20"},
+    {"pregunta": "¿Cuánto vale producto en el parcial 2?", "respuesta": "30"},
+    {"pregunta": "¿Cuánto vale integrador en el parcial 2?", "respuesta": "10"},
+    {"pregunta": "¿Cuánto vale conocimiento en el parcial 3?", "respuesta": "10"},
+    {"pregunta": "¿Cuánto vale desempeño en el parcial 3?", "respuesta": "10"},
+    {"pregunta": "¿Cuánto vale producto en el parcial 3?", "respuesta": "30"},
+    {"pregunta": "¿Cuánto vale integrador en el parcial 3?", "respuesta": "50"}
+]
+
+preguntas_skills = [
+    {"pregunta": "¿Qué lenguaje se usa antes de React Native?", "respuesta": "javascript"},
+    {"pregunta": "¿Qué framework móvil se utilizará?", "respuesta": "react"},
+    {"pregunta": "¿Cómo se llaman las pantallas en React Native?", "respuesta": "screens"},
+    {"pregunta": "¿Qué permite cambiar entre pantallas?", "respuesta": "navigation"},
+    {"pregunta": "¿Con qué se comunica una app para obtener datos?", "respuesta": "api"},
+    {"pregunta": "¿Qué tipo de actividades incluye teoría?", "respuesta": "investigaciones"},
+    {"pregunta": "¿Qué evidencias se subirán a GitHub?", "respuesta": "evidencias"},
+    {"pregunta": "¿Qué lenguaje se abrevia como JS?", "respuesta": "javascript"}
 ]
 
 @app.route("/")
 def inicio():
+
+    session.clear()
 
     session["pregunta_actual"] = 0
     session["correctas"] = 0
 
     session["pregunta_actual_notas"] = 0
     session["correctas_notas"] = 0
+
+    session["pregunta_actual_skills"] = 0
+    session["correctas_skills"] = 0
 
     return render_template("index.html")
 
@@ -120,6 +79,7 @@ def reglas():
         session["pregunta_actual"] = pregunta_actual + 1
 
         if correctas >= 2:
+            session["mensaje_desbloqueo"] = "🔓 Nivel 1 completado"
             return redirect("/notas")
 
         pregunta_actual = session["pregunta_actual"]
@@ -160,6 +120,7 @@ def notas():
         session["pregunta_actual_notas"] = pregunta_actual + 1
 
         if correctas >= 2:
+            session["mensaje_desbloqueo"] = "🔓 Nivel 2 completado"
             return redirect("/skills")
 
         pregunta_actual = session["pregunta_actual_notas"]
@@ -173,12 +134,51 @@ def notas():
         "notas.html",
         pregunta=pregunta,
         mensaje=mensaje,
-        correctas=correctas
+        correctas=correctas,
+        desbloqueo=session.get("mensaje_desbloqueo", "")
     )
 
-@app.route("/skills")
+@app.route("/skills", methods=["GET", "POST"])
 def skills():
-    return render_template("skills.html")
+
+    pregunta_actual = session.get("pregunta_actual_skills", 0)
+    correctas = session.get("correctas_skills", 0)
+
+    mensaje = ""
+
+    if request.method == "POST":
+
+        respuesta_usuario = request.form["respuesta"].lower()
+
+        respuesta_correcta = preguntas_skills[pregunta_actual]["respuesta"]
+
+        if respuesta_correcta in respuesta_usuario:
+            correctas += 1
+            mensaje = "✅ Correcto"
+        else:
+            mensaje = "❌ Incorrecto"
+
+        session["correctas_skills"] = correctas
+        session["pregunta_actual_skills"] = pregunta_actual + 1
+
+        if correctas >= 2:
+            session["mensaje_desbloqueo"] = "🔓 Nivel 3 completado"
+            return redirect("/timeline")
+
+        pregunta_actual = session["pregunta_actual_skills"]
+
+    if pregunta_actual >= len(preguntas_skills):
+        return redirect("/")
+
+    pregunta = preguntas_skills[pregunta_actual]["pregunta"]
+
+    return render_template(
+        "skills.html",
+        pregunta=pregunta,
+        mensaje=mensaje,
+        correctas=correctas,
+        desbloqueo=session.get("mensaje_desbloqueo", "")
+    )
 
 @app.route("/timeline")
 def timeline():
