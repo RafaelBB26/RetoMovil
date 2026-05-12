@@ -34,11 +34,65 @@ preguntas_reglas = [
     }
 ]
 
+preguntas_notas = [
+    {
+        "pregunta": "¿Cuánto vale conocimiento en el parcial 1?",
+        "respuesta": "40"
+    },
+    {
+        "pregunta": "¿Cuánto vale desempeño en el parcial 1?",
+        "respuesta": "20"
+    },
+    {
+        "pregunta": "¿Cuánto vale producto en el parcial 1?",
+        "respuesta": "30"
+    },
+    {
+        "pregunta": "¿Cuánto vale integrador en el parcial 1?",
+        "respuesta": "10"
+    },
+    {
+        "pregunta": "¿Cuánto vale conocimiento en el parcial 2?",
+        "respuesta": "40"
+    },
+    {
+        "pregunta": "¿Cuánto vale desempeño en el parcial 2?",
+        "respuesta": "20"
+    },
+    {
+        "pregunta": "¿Cuánto vale producto en el parcial 2?",
+        "respuesta": "30"
+    },
+    {
+        "pregunta": "¿Cuánto vale integrador en el parcial 2?",
+        "respuesta": "10"
+    },
+    {
+        "pregunta": "¿Cuánto vale conocimiento en el parcial 3?",
+        "respuesta": "10"
+    },
+    {
+        "pregunta": "¿Cuánto vale desempeño en el parcial 3?",
+        "respuesta": "10"
+    },
+    {
+        "pregunta": "¿Cuánto vale producto en el parcial 3?",
+        "respuesta": "30"
+    },
+    {
+        "pregunta": "¿Cuánto vale integrador en el parcial 3?",
+        "respuesta": "50"
+    }
+]
+
 @app.route("/")
 def inicio():
 
     session["pregunta_actual"] = 0
     session["correctas"] = 0
+
+    session["pregunta_actual_notas"] = 0
+    session["correctas_notas"] = 0
 
     return render_template("index.html")
 
@@ -82,9 +136,45 @@ def reglas():
         correctas=correctas
     )
 
-@app.route("/notas")
+@app.route("/notas", methods=["GET", "POST"])
 def notas():
-    return render_template("notas.html")
+
+    pregunta_actual = session.get("pregunta_actual_notas", 0)
+    correctas = session.get("correctas_notas", 0)
+
+    mensaje = ""
+
+    if request.method == "POST":
+
+        respuesta_usuario = request.form["respuesta"].lower()
+
+        respuesta_correcta = preguntas_notas[pregunta_actual]["respuesta"]
+
+        if respuesta_correcta in respuesta_usuario:
+            correctas += 1
+            mensaje = "✅ Correcto"
+        else:
+            mensaje = "❌ Incorrecto"
+
+        session["correctas_notas"] = correctas
+        session["pregunta_actual_notas"] = pregunta_actual + 1
+
+        if correctas >= 2:
+            return redirect("/skills")
+
+        pregunta_actual = session["pregunta_actual_notas"]
+
+    if pregunta_actual >= len(preguntas_notas):
+        return redirect("/")
+
+    pregunta = preguntas_notas[pregunta_actual]["pregunta"]
+
+    return render_template(
+        "notas.html",
+        pregunta=pregunta,
+        mensaje=mensaje,
+        correctas=correctas
+    )
 
 @app.route("/skills")
 def skills():

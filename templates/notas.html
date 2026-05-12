@@ -9,9 +9,25 @@
 </head>
 <body>
 
-    <h1>🔮 Nivel desbloqueado</h1>
+    <h1>🔮 Oráculo de las Notas</h1>
 
-    <h2>Oráculo de las Notas</h2>
+    <h2>Correctas: {{ correctas }}</h2>
+
+    <p>{{ pregunta }}</p>
+
+    <form method="POST">
+
+        <input type="text" name="respuesta" required>
+
+        <br><br>
+
+        <button type="submit">
+            Responder
+        </button>
+
+    </form>
+
+    <h3>{{ mensaje }}</h3>
 
 </body>
 </html>
