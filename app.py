@@ -4,13 +4,17 @@ app = Flask(__name__)
 app.secret_key = "retomovil"
 
 preguntas_reglas = [
-    {"pregunta": "¿Cuántas faltas provocan el final del parcial?", "respuesta": "3"},
-    {"pregunta": "¿Qué pasa si existe plagio?", "respuesta": "0"},
-    {"pregunta": "¿Cómo deben entregarse las actividades?", "respuesta": "pdf"},
-    {"pregunta": "¿Cuál es la duración mínima del video reporte?", "respuesta": "5"},
-    {"pregunta": "¿Qué debe escucharse en el video reporte?", "respuesta": "voz"},
-    {"pregunta": "¿Dónde se entregan las actividades?", "respuesta": "classroom"},
-    {"pregunta": "¿Qué sucede si entregas trabajos incompletos?", "respuesta": "no se aceptan"}
+
+    {"pregunta": "¿Qué porcentaje de asistencia se requiere para tener derecho a evaluación?","respuesta": "80"},
+    {"pregunta": "¿Cuántos minutos de tolerancia existen para entrar a clase?","respuesta": "10"},
+    {"pregunta": "¿Después de cuántas horas ya no se aceptan justificantes?","respuesta": "24"},
+    {"pregunta": "¿En qué plataforma deben subirse las tareas?","respuesta": "classroom"},
+    {"pregunta": "¿Qué pasa con los trabajos entregados fuera de tiempo sin justificación?","respuesta": "no se aceptan"},
+    {"pregunta": "¿Qué sucede si existe plagio en trabajos o exámenes?","respuesta": "reprobar"},
+    {"pregunta": "¿Cuántas incidencias pueden provocar perder derecho a examen?","respuesta": "3"},
+    {"pregunta": "¿Está permitido el uso de audífonos durante la clase?","respuesta": "no"},
+    {"pregunta": "¿Está permitido comer dentro del salón?","respuesta": "no"},
+    {"pregunta": "¿Qué tipo de archivos deben entregarse en Classroom?","respuesta": "pdf"},
 ]
 
 preguntas_notas = [
@@ -40,11 +44,11 @@ preguntas_skills = [
 ]
 
 preguntas_timeline = [
-    {"pregunta": "¿Cuándo es el primer parcial?", "respuesta": "02/06/26"},
-    {"pregunta": "¿Cuándo es el segundo parcial?", "respuesta": "07/07/26"},
-    {"pregunta": "¿Cuándo es el tercer parcial?", "respuesta": "11/08/26"},
+    {"pregunta": "¿Cuándo es el examen de primer parcial?", "respuesta": "02/06/26"},
+    {"pregunta": "¿Cuándo es el examen de segundo parcial?", "respuesta": "07/07/26"},
+    {"pregunta": "¿Cuándo es el examen de tercer parcial?", "respuesta": "11/08/26"},
     {"pregunta": "¿Cuándo es el examen final?", "respuesta": "17/08/26"},
-    {"pregunta": "¿Qué fecha corresponde al parcial 2?", "respuesta": "07/07/26"}
+    
 ]
 
 @app.route("/")
