@@ -15,21 +15,47 @@
 
     <h2>✅ Correctas: {{ correctas }}</h2>
 
-    <p>{{ pregunta }}</p>
+    {% if correctas < 2 %}
 
-    <form method="POST">
+        <p>{{ pregunta }}</p>
 
-        <input type="text" name="respuesta" required>
+        <form method="POST">
 
-        <br><br>
+            <input type="text" name="respuesta" required>
 
-        <button type="submit">
-            Responder
-        </button>
+            <br><br>
 
-    </form>
+            <button type="submit">
+                Responder
+            </button>
 
-    <h3>{{ mensaje }}</h3>
+        </form>
+
+        <h3>{{ mensaje }}</h3>
+
+    {% endif %}
+
+    {% if correctas >= 2 %}
+
+        <h2>🔓 Nivel completado</h2>
+
+        <form method="POST">
+
+            <input type="checkbox" name="compromiso" required>
+
+            <label>
+                Confirmo continuar al siguiente nivel
+            </label>
+
+            <br><br>
+
+            <button type="submit">
+                Continuar
+            </button>
+
+        </form>
+
+    {% endif %}
 
 </body>
 </html>

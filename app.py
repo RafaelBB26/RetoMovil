@@ -16,24 +16,30 @@ preguntas_reglas = [
     {"pregunta": "¿Está permitido el uso de audífonos durante la clase?","respuesta": "no"},
     {"pregunta": "¿Está permitido comer dentro del salón?","respuesta": "no"},
     {"pregunta": "¿Qué tipo de archivos deben entregarse en Classroom?","respuesta": "pdf"},
+
 ]
 
 preguntas_notas = [
+
     {"pregunta": "¿Cuánto vale conocimiento en el parcial 1?", "respuesta": "40"},
     {"pregunta": "¿Cuánto vale desempeño en el parcial 1?", "respuesta": "20"},
     {"pregunta": "¿Cuánto vale producto en el parcial 1?", "respuesta": "30"},
     {"pregunta": "¿Cuánto vale integrador en el parcial 1?", "respuesta": "10"},
+
     {"pregunta": "¿Cuánto vale conocimiento en el parcial 2?", "respuesta": "40"},
     {"pregunta": "¿Cuánto vale desempeño en el parcial 2?", "respuesta": "20"},
     {"pregunta": "¿Cuánto vale producto en el parcial 2?", "respuesta": "30"},
     {"pregunta": "¿Cuánto vale integrador en el parcial 2?", "respuesta": "10"},
+
     {"pregunta": "¿Cuánto vale conocimiento en el parcial 3?", "respuesta": "10"},
     {"pregunta": "¿Cuánto vale desempeño en el parcial 3?", "respuesta": "10"},
     {"pregunta": "¿Cuánto vale producto en el parcial 3?", "respuesta": "30"},
     {"pregunta": "¿Cuánto vale integrador en el parcial 3?", "respuesta": "50"}
+
 ]
 
 preguntas_skills = [
+
     {"pregunta": "¿Qué lenguaje se usa antes de React Native?", "respuesta": "javascript"},
     {"pregunta": "¿Qué framework móvil se utilizará?", "respuesta": "react"},
     {"pregunta": "¿Cómo se llaman las pantallas en React Native?", "respuesta": "screens"},
@@ -42,17 +48,18 @@ preguntas_skills = [
     {"pregunta": "¿Qué tipo de actividades incluye teoría?", "respuesta": "investigaciones"},
     {"pregunta": "¿Qué evidencias se subirán a GitHub?", "respuesta": "evidencias"},
     {"pregunta": "¿Qué lenguaje se abrevia como JS?", "respuesta": "javascript"}
+
 ]
 
 preguntas_timeline = [
+
     {"pregunta": "¿Cuándo es el examen de primer parcial?", "respuesta": "02/06/26"},
     {"pregunta": "¿Cuándo es el examen de segundo parcial?", "respuesta": "07/07/26"},
     {"pregunta": "¿Cuándo es el examen de tercer parcial?", "respuesta": "11/08/26"},
     {"pregunta": "¿Cuándo es el examen final?", "respuesta": "17/08/26"},
-    
+
 ]
 
-@app.route("/")
 @app.route("/")
 def inicio():
 
@@ -104,6 +111,9 @@ def reglas():
 
     if request.method == "POST":
 
+        if "compromiso" in request.form:
+            return redirect("/notas")
+
         respuesta_usuario = request.form["respuesta"].lower()
 
         respuesta_correcta = preguntas_reglas[pregunta_actual]["respuesta"]
@@ -116,8 +126,10 @@ def reglas():
         if resultado == True:
             correctas += 1
             mensaje = "✅ Correcto"
+
         elif resultado == "gameover":
             return redirect("/gameover")
+
         else:
             mensaje = "❌ Incorrecto"
 
@@ -126,7 +138,6 @@ def reglas():
 
         if correctas >= 2:
             session["mensaje_desbloqueo"] = "🔓 Nivel 1 completado"
-            return redirect("/notas")
 
         pregunta_actual = session["pregunta_actual"]
 
@@ -153,6 +164,9 @@ def notas():
 
     if request.method == "POST":
 
+        if "compromiso" in request.form:
+            return redirect("/skills")
+
         respuesta_usuario = request.form["respuesta"].lower()
 
         respuesta_correcta = preguntas_notas[pregunta_actual]["respuesta"]
@@ -165,8 +179,10 @@ def notas():
         if resultado == True:
             correctas += 1
             mensaje = "✅ Correcto"
+
         elif resultado == "gameover":
             return redirect("/gameover")
+
         else:
             mensaje = "❌ Incorrecto"
 
@@ -175,7 +191,6 @@ def notas():
 
         if correctas >= 2:
             session["mensaje_desbloqueo"] = "🔓 Nivel 2 completado"
-            return redirect("/skills")
 
         pregunta_actual = session["pregunta_actual_notas"]
 
@@ -203,6 +218,9 @@ def skills():
 
     if request.method == "POST":
 
+        if "compromiso" in request.form:
+            return redirect("/timeline")
+
         respuesta_usuario = request.form["respuesta"].lower()
 
         respuesta_correcta = preguntas_skills[pregunta_actual]["respuesta"]
@@ -215,8 +233,10 @@ def skills():
         if resultado == True:
             correctas += 1
             mensaje = "✅ Correcto"
+
         elif resultado == "gameover":
             return redirect("/gameover")
+
         else:
             mensaje = "❌ Incorrecto"
 
@@ -225,7 +245,6 @@ def skills():
 
         if correctas >= 2:
             session["mensaje_desbloqueo"] = "🔓 Nivel 3 completado"
-            return redirect("/timeline")
 
         pregunta_actual = session["pregunta_actual_skills"]
 
@@ -253,6 +272,9 @@ def timeline():
 
     if request.method == "POST":
 
+        if "compromiso" in request.form:
+            return redirect("/final")
+
         respuesta_usuario = request.form["respuesta"].lower()
 
         respuesta_correcta = preguntas_timeline[pregunta_actual]["respuesta"].lower()
@@ -265,8 +287,10 @@ def timeline():
         if resultado == True:
             correctas += 1
             mensaje = "✅ Correcto"
+
         elif resultado == "gameover":
             return redirect("/gameover")
+
         else:
             mensaje = "❌ Incorrecto"
 
@@ -274,7 +298,7 @@ def timeline():
         session["pregunta_actual_timeline"] = pregunta_actual + 1
 
         if correctas >= 2:
-            return redirect("/final")
+            session["mensaje_desbloqueo"] = "🔓 Nivel Final completado"
 
         pregunta_actual = session["pregunta_actual_timeline"]
 
